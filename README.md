@@ -1,101 +1,128 @@
-### 🛫 `README.md` — Aviation Accident Data Analysis
 
-```markdown
-# Aviation Accident Data Analysis
+# ✈️ Aviation Safety Analysis Project
 
-## 1. Introduction
+## 📌 Project Overview
 
-This project analyzes historical aviation accident data to help guide a company in making informed decisions about purchasing aircraft. The focus is on identifying trends in aircraft makes and models involved in accidents, especially fatal ones, to assess the relative safety and reliability of different aircraft types.
+This project analyzes aircraft accident data to identify patterns in aviation safety, determine high-risk models, and highlight the safest aircraft types. The dataset originates from the \[FAA (Federal Aviation Administration)] and covers key attributes such as injury severity, weather conditions, aircraft make/model, and flight phase.
 
-## 2. Dataset
+---
 
-- **Source**: [National Transportation Safety Board (NTSB)] or other
-- **Records**: ~90,000+ aviation incident reports
-- **Features**: Accident date, location, aircraft make/model, engine type, number of injuries, weather condition, flight phase, etc.
-- **Time range**: 1962 to 2023
+## 🧰 Tools & Technologies
 
-### Data Cleaning
+* **Python (Pandas, Matplotlib, Seaborn)**: For data cleaning and visualization.
+* **Jupyter Notebook**: Environment for exploration and analysis.
+* **Git & GitHub**: Version control and project sharing.
+* **Tableau**: For interactive dashboards and data storytelling.
 
-- Dropped columns with over 60% missing values (e.g., Latitude, Longitude, Schedule, Air Carrier)
-- Filled missing injury data with `0`
-- Converted dates to datetime format
-- Standardized column names to lowercase with underscores
+---
 
-## 3. Project Structure
+## 🧼 1. Data Cleaning Steps
 
-```
+* Dropped irrelevant columns like coordinates, registration, and airport info.
+* Removed rows with missing key fields (e.g., `Event.Date`, `Make`, `Model`, `Aircraft.damage`).
+* Converted `Event.Date` to datetime.
+* Handled missing injury data by filling with `0`.
+* Standardized column naming (Title Case with underscores).
+* Removed duplicate accident records based on `Accident.Number`.
 
-project-root/
+---
+
+## 🔍 2. Handling Missing Values
+
+* Replaced unknown weather conditions (e.g. `UNK`, `Unk`) with `'Unknown'`.
+* Filled:
+
+  * `Number.Of.Engines` using the mode.
+  * `Purpose.Of.Flight` and `Broad.Phase.Of.Flight` with `'Unknown'`.
+* Dropped rows missing key location and severity fields:
+
+  * `Location`, `Country`, `Injury.Severity`, `Amateur.Built`.
+
+---
+
+## 🛠️ 3. Feature Engineering
+
+* Extracted `Year` from `Event.Date`.
+* Created a combined column `Total.Injuries` from fatal, serious, and minor injuries.
+* Engineered an `Injury.Category` column with the following logic:
+
+  * **Fatal > Serious > Minor > No Injuries**.
+* Constructed:
+
+  * `Make_Model` by combining `Make` and `Model`.
+  * `Model_Group` by extracting numeric part of `Model` (e.g. "737" from "737-800").
+  * `Make_Model_Grouped` by combining `Make` with `Model_Group`, which helps consolidate model variants.
+
+---
+
+## 📊 4. Visual Insights
+
+* **Injury Severity by Flight Phase**:
+
+  > Bar chart showing which phases of flight (e.g., landing, takeoff) have the most injuries.
+
+* **Most Common Aircraft in Accidents**:
+
+  > Top 10 aircraft types by number of accident reports.
+
+* **Most Dangerous Aircraft**:
+
+  > Aircraft models ranked by total fatal injuries.
+
+* **Safest Aircraft**:
+
+  > Models with the highest number of uninjured passengers.
+
+---
+
+## 📁 Project Structure
+
+```bash
+phase_1_project/
 │
-├── data/
-│   ├── raw\_data.csv
-│   └── cleaned\_data.csv
-│
-├── notebooks/
-│   ├── 01\_cleaning\_exploration.ipynb
-│   └── 02\_model\_analysis.ipynb
-│
-├── scripts/
-│   └── clean\_data.py
-│
+├── Aviation_Data.csv
+├── cleaned_aviation_data.csv
+├── student.ipynb
 ├── README.md
-└── requirements.txt
-
-````
-
-## 4. Tools & Technologies
-
-- **Python**
-- **Pandas**
-- **NumPy**
-- **Matplotlib**, **Seaborn**
-- **Jupyter Notebook**
-
-## 5. Setup Instructions
-
-```bash
-git clone https://github.com/your-username/aviation-safety-analysis.git
-cd aviation-safety-analysis
-pip install -r requirements.txt
-````
-
-Or open the notebooks directly using Jupyter:
-
-```bash
-jupyter notebook
+├── Aviation_Safety_Presentation.pptx
+├── presentation.pdf
+├── github.pdf
+└── final tableau project phase 1.twb
 ```
 
-## 6. Key Insights
+---
 
-* Certain aircraft makes (e.g., Cessna, Piper) have high accident frequencies — partly due to high usage.
-* Some models have disproportionately high fatality rates.
-* Weather conditions and flight phases (especially "approach" and "takeoff") significantly impact accident severity.
-* Aircraft with more engines generally show lower fatality averages per incident.
+##  Outcome
 
-## 7. Visualizations
+## Summary of Findings
+* After analyzing the aviation accident data, several key insights emerged:
 
-* Trend of Injuries Over Time – Measures safety improvements
-* Fatal Injuries by Purpose – Exposes high-risk flight type
-* Injuries by Weather – Identifies weather-based patterns
-* 
-Safest Aircraft Models – Suggests models with the  highest uninjured
-* Total Accidents by Aircraft – Highlights risky models
+* Most accidents occurred during the landing and takeoff phases, highlighting the critical nature of these moments in flight.
 
-tableau [https://public.tableau.com/app/profile/cindy.akinyi/viz/finaltableauprojectphase1/interactivedashboards?publish=yes]
+* Aircraft types such as Boeing 737 and Cessna 172 appeared most frequently in accident reports, likely due to their widespread use.
 
-## 8. Future Work
+* Fatal injuries were most commonly associated with certain variants of McDonnell Douglas and Piper aircraft, suggesting higher risk in those models.
 
-* Normalize accidents by aircraft usage (if flight-hour data is available)
-* Include aircraft age and maintenance data
-* Build a machine learning model to predict severity based on flight conditions
+* The safest aircraft models (by number of uninjured passengers) included some variants of Boeing, Airbus, and Beechcraft, which consistently reported high survivability rates.
 
-## 9. Credits
+* Weather conditions and flight purpose also played a notable role in accident severity, with personal or instructional flights being more vulnerable.
 
-* Data from the [NTSB Accident Database](https://www.ntsb.gov/)
-* Projeccindy akinyir Name
+## Recommendations
+* For airline companies or buyers:
+Prioritize aircraft models with strong safety records (e.g., high "Total Uninjured" counts) and consistent performance across different flight phases.
 
-## 10. License
+* For pilots and aviation trainers:
+Extra emphasis should be placed on training during takeoff and landing phases, as these are statistically the most accident-prone.
 
-This project is licensed under the MIT License — see the LICENSE file for details.
+* For aviation authorities:
+Enhanced regulations or monitoring may be needed for aircraft types or purposes of flight (like recreational or experimental aircraft) that show higher fatality rates.
 
-```
+
+---
+
+## 👤 Author
+
+**Cindy Akinyi**
+*Business Information Technology Graduate | Data Analyst Enthusiast*
+GitHub: [@cindyakinyi](https://github.com/cindyakinyi)
+
