@@ -123,6 +123,6 @@ Enhanced regulations or monitoring may be needed for aircraft types or purposes 
 ## 👤 Author
 
 **Cindy Akinyi**
-*Business Information Technology Graduate | Data Analyst Enthusiast*
+*Data Analyst Enthusiast*
 GitHub: [@cindyakinyi](https://github.com/cindyakinyi)
 
